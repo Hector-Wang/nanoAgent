@@ -27,14 +27,11 @@ import json
 import subprocess
 import sys
 import time
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-    base_url=os.environ.get("OPENAI_BASE_URL")
-)
-
-MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 
 # ==================== 工具定义（和 agent.py 完全一样）====================
 

@@ -12,18 +12,15 @@ agent-safe.py - 最简安全 Agent
 """
 
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import json
 import subprocess
-import sys
 import re
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-    base_url=os.environ.get("OPENAI_BASE_URL")
-)
-
-MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 AUTO_APPROVE = False  # 是否跳过用户确认
 
 # ==================== 安全防线 1: 命令黑名单 ====================

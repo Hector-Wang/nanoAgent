@@ -1,17 +1,16 @@
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import json
 import subprocess
-import sys
 import glob as glob_module
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-    base_url=os.environ.get("OPENAI_BASE_URL")
-)
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 
 MEMORY_FILE = "agent_memory.md"
 RULES_DIR = ".agent/rules"
@@ -91,7 +90,7 @@ def plan(task):
         return "Error: Cannot plan within a plan"
     print(f"[Plan] Breaking down: {task}")
     response = client.chat.completions.create(
-        model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+        model=MODEL,
         messages=[
             {"role": "system", "content": "Break task into 3-5 steps. Return JSON with 'steps' array."},
             {"role": "user", "content": task}
@@ -184,7 +183,7 @@ def run_agent_step(messages, tools, max_iterations=5):
     global current_plan, plan_mode
     for _ in range(max_iterations):
         response = client.chat.completions.create(
-            model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            model=MODEL,
             messages=messages,
             tools=tools
         )

@@ -15,9 +15,11 @@ agent-command.py — nanoAgent 番外篇：Command
 """
 
 import os, sys, json
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-llm = OpenAI()
+llm = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 SYSTEM_PROMPT = "You are a helpful assistant with access to tools."
 
 # ---- 工具定义（和第一篇一样） ----
@@ -63,12 +65,12 @@ def cmd_clear(args, messages):
 
 def cmd_model(args, messages):
     if not args:
-        return f"当前模型：{os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')}"
+        return f"当前模型：{MODEL}"
     os.environ["OPENAI_MODEL"] = args[0]
     return f"模型已切换为：{args[0]}"
 
 def cmd_status(args, messages):
-    return f"消息数：{len(messages)}  |  模型：{os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')}"
+    return f"消息数：{len(messages)}  |  模型：{MODEL}"
 
 def cmd_compact(args, messages):
     if len(messages) <= 4:
@@ -77,7 +79,7 @@ def cmd_compact(args, messages):
     old_messages = messages[1:-2]
     recent = messages[-2:]
     summary = llm.chat.completions.create(
-        model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+        model=MODEL,
         messages=[
             {"role": "system", "content": "请用中文简洁总结以下对话的要点，保留关键事实和决策。"},
             {"role": "user", "content": str(old_messages)}
@@ -111,7 +113,7 @@ def handle_command(user_input, messages):
 def run_agent(messages):
     for _ in range(10):
         resp = llm.chat.completions.create(
-            model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            model=MODEL,
             messages=messages, tools=TOOLS
         ).choices[0].message
         messages.append(resp)

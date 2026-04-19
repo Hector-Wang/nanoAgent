@@ -1,15 +1,14 @@
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import json
 import subprocess
-import sys
 from datetime import datetime
 from typing import Any
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-    base_url=os.environ.get("OPENAI_BASE_URL")
-)
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 
 MEMORY_FILE = "agent_memory.md"
 
@@ -119,7 +118,7 @@ def save_memory(task, result):
 def create_plan(task):
     print("[Planning] Breaking down task...")
     response = client.chat.completions.create(
-        model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+        model=MODEL,
         messages=[
             {"role": "system", "content": "Break down the task into 3-5 simple, actionable steps. Return as JSON array of strings."},
             {"role": "user", "content": f"Task: {task}"}
@@ -146,7 +145,7 @@ def run_agent_step(task, messages, max_iterations=5):
     actions = []
     for _ in range(max_iterations):
         response = client.chat.completions.create(
-            model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            model=MODEL,
             messages=messages,
             tools=tools
         )

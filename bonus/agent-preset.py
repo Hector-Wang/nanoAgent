@@ -19,10 +19,11 @@ GitHub: https://github.com/GitHubxsy/nanoAgent
 """
 
 import os, sys, json
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-CLIENT = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"), base_url=os.environ.get("OPENAI_BASE_URL"))
-MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+CLIENT = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 
 # ============================================================
 # 1. Agent：带独立工具集的持久智能体

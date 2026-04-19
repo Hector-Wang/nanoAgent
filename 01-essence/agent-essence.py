@@ -1,12 +1,12 @@
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import json
 import subprocess
 from openai import OpenAI
+from config import API_KEY, BASE_URL, MODEL
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-    base_url=os.environ.get("OPENAI_BASE_URL")
-)
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 
 tools = [
     {
@@ -77,7 +77,7 @@ def run_agent(user_message, max_iterations=5):
     ]
     for _ in range(max_iterations):
         response = client.chat.completions.create(
-            model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            model=MODEL,
             messages=messages,
             tools=tools,
         )
