@@ -92,7 +92,7 @@ class Agent:
         """核心 3: 通信通道 —— 接收来自其他 Agent 的消息"""
         self.inbox.append({"from": sender, "content": message})
 
-    def chat(self, task):
+    def chat(self, task, max_iter = 20):
         """
         核心 1: 持久记忆 —— 每次 chat() 的对话都累积在 self.messages 中
         第二次 chat() 时，Agent 还记得第一次做了什么
@@ -109,7 +109,7 @@ class Agent:
         # 执行本次任务
         self.messages.append({"role": "user", "content": task})
 
-        for _ in range(10):
+        for _ in range(max_iter):
             response = client.chat.completions.create(model=MODEL, messages=self.messages, tools=tools)
             message = response.choices[0].message
             self.messages.append(message)
@@ -170,7 +170,7 @@ def plan_team(task):
     response = client.chat.completions.create(
         model=MODEL,
         messages=[
-            {"role": "system", "content": """You are a project manager. Given a task, plan a team of 2-4 members.
+            {"role": "system", "content": """You are a project manager. Given a task, you must plan a team of 2-4 members.
 Return JSON: {"team": [{"name": "alice", "role": "...", "task": "..."}]}
 Rules: use lowercase english names, last member should be a reviewer, keep tasks concise."""},
             {"role": "user", "content": task}
