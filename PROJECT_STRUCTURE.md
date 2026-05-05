@@ -2,134 +2,134 @@
 
 ## Overview
 
-**nanoAgent — Understanding Agents from Scratch**
+**nanoAgent — 从零理解 Agent**
 
-A minimalist open-source educational project that builds a complete AI Agent system layer by layer, starting from 103 lines of core code. It progressively introduces **memory, planning, tool extensions, multi-agent collaboration, context compression, and safety** — all essential features of a production-grade Agent.
+极简开源教学项目，从 103 行核心代码出发，逐步构建涵盖**记忆、规划、工具扩展、多智能体协作、上下文压缩、安全防护**等全部关键特性的完整 AI Agent 系统。
 
-Core principle: **Agent = LLM + Tools + Loop**.
+核心理念：**Agent = LLM + 工具 + 循环**。
 
 ---
 
 ## Core Modules (01–07)
 
-### 01-essence — Agent Fundamentals
-- **agent-essence.md** — In-depth原理讲解 (17KB)
-- **agent-essence.py** — 103-line minimalist Agent implementation
-- **Topics**: Tool Schema, Tool Implementation (execute_bash/read_file/write_file), Agent core loop (ReAct: Think → Act → Observe)
-- **Key concepts**: Function Calling, Agent Loop, Tool Schema
+### 01-essence — Agent 本质
+- **agent-essence.md** — 原理详解 (17KB)
+- **agent-essence.py** — 103 行极简实现
+- **核心内容**：Tool Schema、工具实现（execute_bash/read_file/write_file）、Agent 核心循环（ReAct：思考→行动→观察）
+- **关键概念**：Function Calling、Agent Loop、Tool Schema
 
-### 02-memory — Memory & Planning
-- **agent-memory.md** — Memory and planning mechanisms (15KB)
-- **agent-memory.py** — 206-line Agent with memory
-- **Topics**: Persistent Memory, Task decomposition and planning
-- **New capability**: Agent retains conversation history and can plan before executing complex tasks
+### 02-memory — 记忆与规划
+- **agent-memory.md** — 记忆与规划机制 (15KB)
+- **agent-memory.py** — 206 行带记忆实现
+- **核心内容**：持久记忆、任务分解规划
+- **新增能力**：Agent 能记住历史对话，面对复杂任务能先规划再执行
 
-### 03-skills-mcp — Rules, Skills & MCP Protocol
-- **agent-skills-mcp.md** — Behavioral rules and MCP (23KB, largest doc)
-- **agent-skills-mcp.py** — 282-line extended Agent
-- **Topics**: Behavioral Rules, Reusable Skills, MCP (Model Context Protocol) tool loading
-- **New capability**: Custom behavioral constraints, skill reuse, third-party tools via MCP
+### 03-skills-mcp — 规则、技能与 MCP 协议
+- **agent-skills-mcp.md** — 行为规则与 MCP (23KB，最大文档)
+- **agent-skills-mcp.py** — 282 行扩展实现
+- **核心内容**：行为规则、可复用技能、MCP (Model Context Protocol) 工具加载
+- **新增能力**：自定义行为约束、复用已有技能、通过 MCP 扩展第三方工具
 
-### 04-subagent — Sub-Agents
-- **agent-subagent.md** — SubAgent mechanism (17KB)
-- **agent-subagent.py** — 192-line SubAgent implementation
-- **Topics**: One-off SubAgents, Task delegation
-- **New capability**: Main Agent spawns sub-agents for parallel subtask execution
+### 04-subagent — 子智能体
+- **agent-subagent.md** — SubAgent 机制 (17KB)
+- **agent-subagent.py** — 192 行子智能体实现
+- **核心内容**：一次性子智能体、任务委派机制
+- **新增能力**：主 Agent 创建子 Agent 并行处理子任务
 
-### 05-teams — Multi-Agent Team Collaboration
-- **agent-teams.md** — Multi-Agent collaboration (14KB)
-- **agent-teams.py** — 270-line team Agent
-- **Topics**: Persistent Agents, Role-based identity, Team communication
-- **New capability**: From ad-hoc workers to structured teams with role assignment and collaboration
+### 05-teams — 多智能体团队协作
+- **agent-teams.md** — 多 Agent 协作 (14KB)
+- **agent-teams.py** — 270 行团队实现
+- **核心内容**：持久 Agent、角色身份管理、团队通信
+- **新增能力**：从临时工到正式团队，支持角色分配与协作
 
-### 06-compact — Context Compression
-- **agent-compact.md** — Context compression strategy (13KB)
-- **agent-compact.py** — 169-line compression Agent
-- **Topics**: Automatic summarization to prevent context window overflow
-- **New capability**: When conversation history grows too long, auto-summarizes old messages to save tokens
+### 06-compact — 上下文压缩
+- **agent-compact.md** — 上下文压缩策略 (13KB)
+- **agent-compact.py** — 169 行压缩实现（含 bug 修复）
+- **核心内容**：自动摘要压缩，防止 Context 窗口爆满
+- **新增能力**：对话历史过长时自动摘要，节省 Token
 
-### 07-safety — Safety & Permission Control
-- **agent-safe.md** — Safety mechanisms (14KB)
-- **agent-safe.py** — 219-line safety-aware Agent
-- **Topics**: Command blacklist, Human-in-the-loop confirmation, Output truncation
-- **New capability**: Three-layer defense against dangerous operations (e.g. `rm -rf /`)
+### 07-safety — 安全与权限控制
+- **agent-safe.md** — 安全防护机制 (14KB)
+- **agent-safe.py** — 219 行安全实现
+- **核心内容**：命令黑名单、人工确认、输出截断
+- **新增能力**：三道安全防线，防止执行危险操作（如 `rm -rf /`）
 
 ---
 
 ## Extended Modules
 
-### bonus — Feature Collection
-Standalone feature modules:
-- **agent-command.py** — Command mode
-- **agent-observable.py** — Observability / event system
-- **agent-preset.py** — Preset configurations
-- **agent-stream.py** — Streaming output
-- 8 companion Markdown docs covering: Agent creation patterns, command mode, evaluation, filesystem, observability, streaming, token management, and tool selection
+### bonus — 功能合集
+独立功能模块：
+- **agent-command.py** — 命令模式
+- **agent-observable.py** — 可观察性/事件系统
+- **agent-preset.py** — 预设配置
+- **agent-stream.py** — 流式输出
+- 配套 8 篇 Markdown，涵盖：Agent 创建模式、命令模式、评估机制、文件系统、可观察性、流式处理、Token 管理、工具选择
 
-### full — Full-Featured Integration
-- **agent-full.py** — 507-line integration of all 7 capabilities
-- **agent-full.md** — Integration guide
-- **nanoAgent-bonus-harness.md** — Testing harness (16KB)
+### full — 完整集成版
+- **agent-full.py** — 507 行，集成全部七篇能力
+- **agent-full.md** — 集成说明
+- **nanoAgent-bonus-harness.md** — 测试框架 (16KB)
 
-### real-mcp — Real MCP Implementation
-- **nanoagent-bonus-mcp-real.md** — MCP protocol实战 (14KB)
+### real-mcp — 真实 MCP 实现
+- **nanoagent-bonus-mcp-real.md** — MCP 协议实战 (14KB)
 - **nano_mcp_http_agent.py** — MCP HTTP Agent (2KB)
 - **nano_mcp_http_server.py** — MCP HTTP Server (2KB)
-- **Topics**: True MCP communication over HTTP
+- 通过 HTTP 实现真正的 MCP 通信
 
-### llm-from-scratch — Understanding LLMs from Scratch
-12 Markdown docs + 12 Python scripts covering LLM internals:
-- **Docs**: 01-next-token-prediction → 02-token → 03-embedding → 04-attention → 05-transformer → 06-training → 07-inference
-- **Code**: tokenizer_demo.py, embedding.py, attention.py, multi_head.py, transformer_anatomy.py, train_tiny.py, inference.py, generate.py, etc.
-- **Topics**: Next-token prediction, tokenization, embeddings, attention, Transformer architecture, training and inference
+### llm-from-scratch — 从零理解 LLM
+12 篇文档 + 12 个脚本，系统讲解 LLM 底层原理：
+- **文档系列**：01-next-token-prediction → 02-token → 03-embedding → 04-attention → 05-transformer → 06-training → 07-inference
+- **代码示例**：tokenizer_demo.py、embedding.py、attention.py、multi_head.py、transformer_anatomy.py、train_tiny.py、inference.py、generate.py 等
+- **核心内容**：下一个词预测、Token 化、嵌入、注意力机制、Transformer 架构、训练与推理全流程
 
-### nano-skill — Skill System Deep Dive
-5-doc series (~76KB) covering the Agent skill system:
-- **skill-01**: What is a Skill
-- **skill-02**: Anatomy of a Skill
-- **skill-03**: Your First Skill Implementation
-- **skill-04**: Skill Creator
-- **skill-05**: Skill Composition
+### nano-skill — 技能系统详解
+5 篇系列文档（约 76KB），深入讲解 Agent 技能系统：
+- **skill-01**：什么是 Skill
+- **skill-02**：Skill 的解剖结构
+- **skill-03**：第一个 Skill 实现
+- **skill-04**：Skill Creator（技能创造者）
+- **skill-05**：技能组合（Composition）
 
-### tech-sharing — Technical Sharing
-- **tech-sharing.md** — ~27KB technical sharing document
+### tech-sharing — 技术分享
+- **tech-sharing.md** — 约 27KB 技术分享文档
 
-### tests — Test Suite
-- **test_agent.py** — Agent core tests (11KB)
-- **test_compact.py** — Compression feature tests (4KB)
-- **test_subagent.py** — SubAgent tests (4KB)
+### tests — 测试套件
+- **test_agent.py** — Agent 核心测试 (11KB)
+- **test_compact.py** — 压缩功能测试 (4KB)
+- **test_subagent.py** — 子智能体测试 (4KB)
 
 ---
 
 ## Key Statistics
 
-| Category | Count |
-|----------|-------|
-| Core series modules | 7 |
-| Python files | 20+ |
-| Markdown docs | 30+ |
-| Core code lines (7 modules) | 103 → 206 → 282 → 192 → 270 → 169 → 219 |
-| Full integration | 507 lines |
-| Test files | 3 |
+| 类别 | 数量 |
+|------|------|
+| 核心系列篇章 | 7 篇 |
+| Python 代码文件 | 20+ |
+| Markdown 文档 | 30+ |
+| 核心代码行数（7 个模块） | 103 → 206 → 282 → 192 → 270 → 169 → 219 |
+| 完整版代码 | 507 行 |
+| 测试文件 | 3 个 |
 
 ---
 
 ## Learning Path
 
 ```
-Recommended sequence:
+推荐顺序：
 01-essence → 02-memory → 03-skills-mcp → 04-subagent → 05-teams → 06-compact → 07-safety
 
-Jump in by topic:
-- Agent fundamentals → 01-essence
-- Adding memory → 02-memory
-- MCP / custom tools → 03-skills-mcp
-- Parallel tasks → 04-subagent
-- Multi-agent collaboration → 05-teams
-- Context window overflow → 06-compact
-- Security concerns → 07-safety
-- Full-featured version → full/
-- LLM internals → llm-from-scratch/
+按需跳入：
+- 想懂 Agent 原理 → 01-essence
+- 想加记忆 → 02-memory
+- 想接 MCP/自定义工具 → 03-skills-mcp
+- 想做并行任务 → 04-subagent
+- 想做多 Agent 协作 → 05-teams
+- 担心 Context 爆满 → 06-compact
+- 担心安全隐患 → 07-safety
+- 想要完整版 → full/
+- 想学 LLM 底层原理 → llm-from-scratch/
 ```
 
 ---
