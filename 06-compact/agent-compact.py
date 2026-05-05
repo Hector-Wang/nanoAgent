@@ -87,14 +87,35 @@ def compact_messages(messages):
     print(f"\n[Compact] messages 数量 ({len(messages)}) 超过阈值 ({COMPACT_THRESHOLD})，开始压缩...")
 
     system_msg = messages[0]            # system prompt 永远保留
-    old_messages = messages[1:-KEEP_RECENT]  # 需要被压缩的旧消息
-    recent_messages = messages[-KEEP_RECENT:]  # 最近的消息保留原样
+
+    def msg_role(msg):
+        return msg.get("role", "unknown") if isinstance(msg, dict) else getattr(msg, "role", "unknown")
+
+    def msg_tool_calls(msg):
+        if isinstance(msg, dict):
+            return msg.get("tool_calls")
+        return getattr(msg, "tool_calls", None)
+
+    def msg_content(msg):
+        return msg.get("content", "") if isinstance(msg, dict) else getattr(msg, "content", "")
+
+    # 从后往前找 cutoff 位置，保证不切断 tool_call/result 配对
+    cutoff = len(messages) - KEEP_RECENT
+    while cutoff > 1 and msg_role(messages[cutoff]) == "tool":
+        cutoff -= 1  # 跳过这个 tool（它会进入 recent）
+        if cutoff > 1 and msg_role(messages[cutoff]) == "assistant" and msg_tool_calls(messages[cutoff]):
+            # 前一条是带 tool_calls 的 assistant，保留它（不继续回退）
+            # 这样 recent = [..., asst(tool_calls), tool, ...]，配对完整
+            break
+
+    old_messages = messages[1:cutoff]    # 需要被压缩的旧消息
+    recent_messages = messages[cutoff:]  # 最近的消息保留原样
 
     # 把旧消息拼成文本，交给 LLM 做摘要
     old_text = ""
     for msg in old_messages:
-        role = msg.get("role", "unknown") if isinstance(msg, dict) else getattr(msg, "role", "unknown")
-        content = msg.get("content", "") if isinstance(msg, dict) else getattr(msg, "content", "")
+        role = msg_role(msg)
+        content = msg_content(msg)
         if content:
             old_text += f"[{role}]: {content}\n"
 
